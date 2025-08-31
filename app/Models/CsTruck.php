@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,10 +30,26 @@ class CsTruck extends Model
         'total_load_weight',
         'status_process',
         'status_security',
+        'remarks',
     ];
 
     public function items()
     {
         return $this->hasMany(CsItem::class, 'truck_id');
+    }
+
+    public function recalcTotals()
+    {
+        $this->total_qty_box = $this->items()->sum('qty_box');
+        $this->total_qty_pcs = $this->items()->sum('qty_pcs');
+        $this->total_items_weight = $this->items()->sum('item_weight');
+
+        $this->total_material_weight = $this->items()->sum('material_weight');
+        $this->total_box_weight = $this->items()->sum('box_weight');
+
+        // total isi truck = material + box
+        $this->total_load_weight = $this->total_material_weight + $this->total_box_weight;
+
+        $this->save();
     }
 }

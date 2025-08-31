@@ -9,7 +9,7 @@ use App\Http\Middleware\RoleMiddleware;
 Route::get('/', [LoginController::class, 'showRoleSelection'])->name('select.role');
 Route::get('/login/{role}', [LoginController::class, 'loginForm'])->name('login.role');
 Route::post('/login', [LoginController::class, 'processLogin'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logoutUser'])->name('logout');
 
 Route::middleware(['auth', RoleMiddleware::class . ':cs'])->group(function () {
     Route::get('/cs-dashboard', [truckController::class, 'dashboard'])->name('cs.dashboard');

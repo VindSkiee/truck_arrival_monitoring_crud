@@ -41,12 +41,15 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logoutUser(Request $request)
     {
-        Auth::logout();
+        Auth::logout(); // keluarin user
+
+        // invalidate session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('select.role');
+        return redirect()->route('select.role')->with('success', 'Berhasil logout.');
+
     }
 }

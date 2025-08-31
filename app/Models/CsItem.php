@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,5 +33,20 @@ class CsItem extends Model
     public function truck()
     {
         return $this->belongsTo(CsTruck::class, 'truck_id');
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($item) {
+            $item->truck?->recalcTotals();
+        });
+
+        static::updated(function ($item) {
+            $item->truck?->recalcTotals();
+        });
+
+        static::deleted(function ($item) {
+            $item->truck?->recalcTotals();
+        });
     }
 }

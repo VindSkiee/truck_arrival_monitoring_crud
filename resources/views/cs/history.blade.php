@@ -93,104 +93,336 @@
         @forelse ($trucks as $truck)
             <div class="border rounded-lg shadow mb-6">
                 <div class="bg-gray-100 px-4 py-2 flex justify-between items-center">
-                    <h2 class="font-semibold">Truck #{{ $truck->id }} - Kedatangan: {{ $truck->arrival_number }}</h2>
+                    <h2 class="font-semibold">Truck - Kedatangan: {{ $truck->arrival_number }}</h2>
                     <span class="text-sm text-gray-600">Tanggal: {{ $truck->date }}</span>
                 </div>
 
                 <div class="p-4">
                     <!-- Truck Info -->
-                    <div class="grid grid-cols-5 gap-3 text-sm truck-info-grid mb-4">
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 mb-1 font-bold">Kedatangan truck</span>
-                            <span class="text-sm font-medium text-center">{{ $truck->arrival_number ?? '-' }}</span>
+                    <div class="p-4 border-b">
+                        <div class="truck-info-grid mb-3">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">Kedatangan truck</span>
+                                <span class="text-sm font-medium text-center">{{ $truck->arrival_number ?? '-' }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">Qty box / pallet</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->total_qty_box ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">Status</span>
+                                <span
+                                    class="status-badge text-center
+                                            @if ($truck->status_process == 'finish') bg-green-100 text-green-800
+                                            @elseif($truck->status_process == 'loading') bg-yellow-100 text-yellow-800
+                                            @else bg-blue-100 text-blue-800 @endif">
+                                    {{ $truck->status_process ?? '-' }}
+                                </span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">BERAT TOTAL (kg)</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->total_material_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">BERAT BOX (kg)</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->total_box_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">BERAT ISI TRUCK (kg)</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->total_load_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">MIN</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->min_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500 mb-3 font-bold">MAX</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->max_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-yellow-500 mb-3 font-bold">TOLERANSI</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->tolerance_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-red-500 mb-3 font-bold">WARNING</span>
+                                <span
+                                    class="text-sm font-medium text-center">{{ number_format($truck->warning_weight ?? 0, 0, ',', '.') }}</span>
+                            </div>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 mb-1 font-bold">Qty box pallet</span>
-                            <span class="text-sm font-medium text-center">{{ $truck->total_qty_box ?? '-' }}</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 mb-1 font-bold">Status</span>
-                            <span
-                                class="text-center px-2 py-1 rounded
-                            @if ($truck->status_process == 'finish') bg-green-100 text-green-800
-                            @elseif($truck->status_process == 'loading') bg-yellow-100 text-yellow-800
-                            @else bg-blue-100 text-blue-800 @endif">
-                                {{ $truck->status_process ?? '-' }}
-                            </span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 mb-1 font-bold">Berat total (kg)</span>
-                            <span
-                                class="text-sm font-medium text-center">{{ $truck->total_material_weight ?? '-' }}</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 mb-1 font-bold">Berat isi (kg)</span>
-                            <span class="text-sm font-medium text-center">{{ $truck->total_load_weight ?? '-' }}</span>
-                        </div>
-                    </div>
 
-                    <!-- Items Table -->
-                    <div class="overflow-x-auto text-xs">
-                        <table class="w-full border-collapse border">
-                            <thead>
-                                <tr class="bg-gray-200">
-                                    <th rowspan="2" class="border p-1">Kedatangan</th>
-                                    <th rowspan="2" class="border p-1">Customer</th>
-                                    <th rowspan="2" class="border p-1">Area</th>
-                                    <th rowspan="2" class="border p-1">Urutan</th>
-                                    <th rowspan="2" class="border p-1">No SO</th>
-                                    <th rowspan="2" class="border p-1">MID</th>
-                                    <th colspan="4" class="border p-1 text-center">Item Desc</th>
-                                    <th rowspan="2" class="border p-1">Box/Pallet</th>
-                                    <th rowspan="2" class="border p-1">PCS</th>
-                                    <th rowspan="2" class="border p-1">Box</th>
-                                    <th rowspan="2" class="border p-1">Box Weight</th>
-                                    <th rowspan="2" class="border p-1">Status</th>
-                                    <th rowspan="2" class="border p-1">Waktu Muat</th>
-                                    <th rowspan="2" class="border p-1">Material Weight</th>
-                                </tr>
-                                <tr class="bg-gray-100">
-                                    <th class="border p-1">Type</th>
-                                    <th class="border p-1">Item Weight</th>
-                                    <th class="border p-1">Color</th>
-                                    <th class="border p-1">Pattern Nose</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($truck->items as $item)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="border p-1">{{ $item->kedatangan_truck }}</td>
-                                        <td class="border p-1">{{ $item->nama_customer }}</td>
-                                        <td class="border p-1">{{ $item->area }}</td>
-                                        <td class="border p-1">{{ $item->urutan_bongkar }}</td>
-                                        <td class="border p-1">{{ $item->no_so }}</td>
-                                        <td class="border p-1">{{ $item->mid }}</td>
-                                        <td class="border p-1">{{ $item->type }}</td>
-                                        <td class="border p-1">{{ $item->item_weight }}</td>
-                                        <td class="border p-1">{{ $item->color }}</td>
-                                        <td class="border p-1">{{ $item->pattern_nose }}</td>
-                                        <td class="border p-1">{{ $item->qty_box_pallet }}</td>
-                                        <td class="border p-1">{{ $item->qty_pcs }}</td>
-                                        <td class="border p-1">{{ $item->qty_box }}</td>
-                                        <td class="border p-1">{{ $item->box_weight }}</td>
-                                        <td class="border p-1">{{ $item->status_stock }}</td>
-                                        <td class="border p-1">{{ $item->waktu_muat }}</td>
-                                        <td class="border p-1">{{ $item->material_weight }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="17" class="text-center text-gray-500 p-2">Tidak ada item</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                        <!-- Items Table -->
+                        <div class="p-3 overflow-x-auto">
+                            @if ($truck->items && count($truck->items) > 0)
+                                <table class="w-full border-collapse border compact-table">
+                                    <thead>
+                                        <!-- Row 1: grup header -->
+                                        <tr class="bg-gradient-to-r from-blue-200 to-blue-50 text-gray-800">
+                                            <th class="border p-1 text-center" rowspan="2">Kedatangan</th>
+                                            <th class="border p-1 text-center" rowspan="2">Customer</th>
+                                            <th class="border p-1 text-center" rowspan="2">Area</th>
+                                            <th class="border p-1 text-center" rowspan="2">Urutan</th>
+                                            <th class="border p-1 text-center" rowspan="2">No SO</th>
+                                            <th class="border p-1 text-center" rowspan="2">MID</th>
+
+                                            <!-- Grup Item Desc -->
+                                            <th class="border p-1 text-center" colspan="4">Item Desc</th>
+                                            <th class="border p-1 text-center" rowspan="2">Qty (Box/Pallet)</th>
+                                            <th class="border p-1 text-center" rowspan="2">Qty/PCS</th>
+                                            <th class="border p-1 text-center" rowspan="2">Qty box/pallet</th>
+                                            <th class="border p-1 text-center" rowspan="2">Status</th>
+                                            <th class="border p-1 text-center" rowspan="2">Waktu Muat</th>
+                                            <th class="border p-1 text-center" rowspan="2">BERAT box</th>
+                                            <th class="border p-1 text-center" rowspan="2">BERAT TOTAL</th>
+                                            <th class="border p-1 text-center" rowspan="2">Aksi</th>
+                                        </tr>
+
+                                        <!-- Row 2: sub kolom detail -->
+                                        <tr class="bg-gradient-to-r from-blue-300 to-blue-100 text-gray-700">
+                                            <th class="border p-1 text-center">Type</th>
+                                            <th class="border p-1 text-center">Item Weight</th>
+                                            <th class="border p-1 text-center">Color</th>
+                                            <th class="border p-1 text-center">Pattern Nose</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($truck->items as $item)
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="border p-1 text-center">{{ $item->kedatangan_truck }}
+                                                </td>
+                                                <td class="border p-1 text-center">{{ $item->nama_customer }}</td>
+                                                <td class="border p-1 text-center">{{ $item->area }}</td>
+                                                <td class="border p-1 text-center">{{ $item->urutan_bongkar }}
+                                                </td>
+                                                <td class="border p-1 text-center">{{ $item->no_so }}</td>
+                                                <td class="border p-1 text-center">{{ $item->mid }}</td>
+
+                                                <!-- Item Desc -->
+                                                <td class="border p-1 text-center">{{ $item->type }}</td>
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->item_weight, 0, ',', '.') }}</td>
+                                                <td class="border p-1 text-center">{{ $item->color }}</td>
+                                                <td class="border p-1 text-center">{{ $item->pattern_nose }}</td>
+
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->qty_box_pallet, 0, ',', '.') }}
+                                                </td>
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->qty_pcs, 0, ',', '.') }}</td>
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->qty_box, 0, ',', '.') }}</td>
+
+
+                                                <td
+                                                    class="border p-1 text-center font-bold 
+                                {{ $item->status_stock === 'Stock Ready' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                                    {{ $item->status_stock }}
+                                                </td>
+
+                                                <td class="border p-1 text-center">{{ $item->waktu_muat }}</td>
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->box_weight, 0, ',', '.') }}</td>
+                                                <td class="border p-1 text-center">
+                                                    {{ number_format($item->material_weight, 0, ',', '.') }}
+                                                </td>
+                                                <td class="border p-1 text-center">
+                                                    <div class="flex justify-center space-x-1">
+                                                        <button type="button"
+                                                            class="text-blue-600 hover:text-blue-800 p-1"
+                                                            onclick='openEditItemModal(@json($item))'>
+                                                            <i class="fas fa-edit text-xs"></i>
+                                                        </button>
+
+                                                        <form action="{{ route('item.delete', $item->id) }}"
+                                                            method="POST" style="display:inline;"
+                                                            onsubmit="return confirm('Yakin ingin menghapus item ini?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="text-red-600 hover:text-red-800 p-1">
+                                                                <i class="fas fa-trash text-xs"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="text-center py-4 text-gray-500">
+                                    <i class="fas fa-box-open text-3xl mb-2"></i>
+                                    <p>Tidak ada item untuk truck ini</p>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-        @empty
-            <p class="text-gray-500">Belum ada data history.</p>
+            @empty
+                <p class="text-gray-500">Belum ada data history.</p>
         @endforelse
     </div>
+
+    <div id="editItemModal"
+        class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 md:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto">
+            <div class="p-4 border-b">
+                <h2 class="text-xl font-semibold text-gray-800">Edit Item</h2>
+            </div>
+            <form method="POST" id="editItemForm" action="">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Customer</label>
+                        <input type="text" name="nama_customer" id="edit_nama_customer"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">kedatangan</label>
+                        <input type="text" name="kedatangan_truck" id="kedatangan_truck"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Area</label>
+                        <input type="text" name="area" id="edit_area"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">No SO</label>
+                        <input type="text" name="no_so" id="edit_no_so"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Urutan Bongkar</label>
+                        <input type="text" name="urutan_bongkar" id="edit_urutan_bongkar"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">MID</label>
+                        <input type="text" name="mid" id="edit_mid"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Type</label>
+                        <input type="text" name="type" id="edit_type"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Item Weight</label>
+                        <input type="number" step="0.01" name="item_weight" id="edit_item_weight"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Color</label>
+                        <input type="text" name="color" id="edit_color"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Pattern Nose</label>
+                        <input type="text" name="pattern_nose" id="edit_pattern_nose"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Qty (Box/Pallet)</label>
+                        <input type="number" name="qty_box_pallet" id="edit_qty_box_pallet"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Qty/PCS</label>
+                        <input type="number" name="qty_pcs" id="edit_qty_pcs"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Qty Box / pallet</label>
+                        <input type="number" name="qty_box" id="edit_qty_box"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status Stock</label>
+                        <select name="status_stock" id="edit_status_stock" class="border rounded p-2 w-full text-sm">
+                            <option value="Stock Ready">Stock Ready</option>
+                            <option value="On Production">On Production</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Waktu Muat</label>
+                        <input type="text" name="waktu_muat" id="edit_waktu_muat"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">BERAT TOTAL (kg)</label>
+                        <input type="number" step="0.01" name="material_weight" id="edit_material_weight"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">BERAT box (kg)</label>
+                        <input type="number" step="0.01" name="box_weight" id="edit_box_weight"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                </div>
+                <div class="p-4 flex justify-end space-x-3 border-t">
+                    <button type="button" onclick="closeEditItemModal()"
+                        class="px-4 py-2 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        
+
+        // Close modal when clicking outside
+        document.getElementById('itemModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeItemModal();
+            }
+        });
+
+        function openEditItemModal(item) {
+            const modal = document.getElementById('editItemModal');
+            const form = document.getElementById('editItemForm');
+
+            form.action = `/item/${item.id}`;
+
+            document.getElementById('edit_nama_customer').value = item.nama_customer ?? '';
+            document.getElementById('kedatangan_truck').value = item.kedatangan_truck ?? '';
+            document.getElementById('edit_area').value = item.area ?? '';
+            document.getElementById('edit_no_so').value = item.no_so ?? '';
+            document.getElementById('edit_urutan_bongkar').value = item.urutan_bongkar ?? '';
+            document.getElementById('edit_mid').value = item.mid ?? '';
+            document.getElementById('edit_type').value = item.type ?? '';
+            document.getElementById('edit_item_weight').value = item.item_weight ?? '';
+            document.getElementById('edit_color').value = item.color ?? '';
+            document.getElementById('edit_pattern_nose').value = item.pattern_nose ?? '';
+            document.getElementById('edit_qty_box_pallet').value = item.qty_box_pallet ?? '';
+            document.getElementById('edit_qty_pcs').value = item.qty_pcs ?? '';
+            document.getElementById('edit_qty_box').value = item.qty_box ?? '';
+            document.getElementById('edit_box_weight').value = item.box_weight ?? '';
+            document.getElementById('edit_status_stock').value = item.status_stock ?? '';
+            document.getElementById('edit_waktu_muat').value = item.waktu_muat ?? '';
+            document.getElementById('edit_material_weight').value = item.material_weight ?? '';
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeEditItemModal() {
+            document.getElementById('editItemModal').classList.add('hidden');
+        }
+    </script>
 </body>
 
 </html>

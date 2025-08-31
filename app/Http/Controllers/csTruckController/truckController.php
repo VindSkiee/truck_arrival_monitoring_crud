@@ -29,7 +29,7 @@ class truckController extends Controller
     // 3. Lihat detail truck beserta items
     public function getTruck($truckId)
     {
-        $truck = CsTruck::with('items')->findOrFail($truckId);
+        $truck = CsTruck::whereDate('date', today())->with('items')->findOrFail($truckId);
 
         return response()->json($truck);
     }

@@ -90,9 +90,9 @@
     <div class="content">
         <h1>Pilih Area Login</h1>
 
-        <a href="{{ route('login.role', 'satpam') }}" class="role-card satpam">CS</a>
-        <a href="{{ route('login.role', 'satpam') }}" class="role-card satpam">Security</a>
-        <a href="{{ route('login.role', 'gudang') }}" class="role-card gudang">Warehouse</a>
+        <a href="{{ route('login.role', 'cs') }}" class="role-card cs">CS</a>
+        <a href="{{ route('login.role', 'security') }}" class="role-card security">Security</a>
+        <a href="{{ route('login.role', 'warehouse') }}" class="role-card security">Warehouse</a>
 
         <div class="footer">
             PT. Papertech Indonesia &copy; 2025 - All Rights Reserved

@@ -65,7 +65,7 @@
             <div class="flex items-center">
                 <!-- Logo placeholder - ganti dengan logo asli Sonoco -->
                 <div class="logo-container mr-3 bg-white rounded p-1 flex items-center justify-center">
-                    <span class="text-blue-800 font-bold text-lg">S</span>
+                    <img src="{{ asset('pics/Sonoco.png') }}" alt="Sonoco Logo" class="h-full">
                     <!-- Ganti dengan tag img jika memiliki logo -->
                     <!-- <img src="path-to-logo.png" alt="Sonoco Logo" class="h-full"> -->
                 </div>
@@ -75,9 +75,13 @@
                 <a href="{{ route('cs.history') }}" class="hover:text-gray-300">
                     <i class="fas fa-history mr-1"></i> History
                 </a>
-                <a href="{{ route('logout') }}" class="hover:text-gray-300">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="hover:text-gray-300">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </button>
+                </form>
+
             </div>
         </div>
     </nav>
@@ -139,10 +143,6 @@
                     </div>
                 @else
                     <div class="flex justify-end mb-4">
-                        <button
-                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm flex items-center">
-                            <i class="fas fa-sync-alt mr-2"></i> Reset
-                        </button>
                     </div>
                     @foreach ($trucks as $truck)
                         <div class="truck-card bg-white border rounded-lg shadow-sm overflow-hidden">
@@ -161,7 +161,8 @@
                                     @endif
                                 </div>
                                 <div class="flex items-center space-x-2 mt-2 md:mt-0">
-                                    <span class="text-xs text-gray-600">{{ $truck->date }}</span>
+                                    <span
+                                        class="text-xs text-gray-600 font-bold">{{ \Carbon\Carbon::parse($truck->date)->translatedFormat('l, d F Y') }}</span>
                                     <button class="text-blue-600 hover:text-blue-800 text-sm p-1"
                                         onclick="openItemModal({{ $truck->id }})">
                                         <i class="fas fa-plus-circle"></i> Tambah Item
@@ -187,9 +188,9 @@
                                             class="text-sm font-medium text-center">{{ $truck->arrival_number ?? '-' }}</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-xs text-gray-500 mb-3 font-bold">Qty box pallet</span>
+                                        <span class="text-xs text-gray-500 mb-3 font-bold">Qty box / pallet</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->total_qty_box ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->total_qty_box ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xs text-gray-500 mb-3 font-bold">Status</span>
@@ -202,39 +203,39 @@
                                         </span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-xs text-gray-500 mb-3 font-bold">Berat total (kg)</span>
+                                        <span class="text-xs text-gray-500 mb-3 font-bold">BERAT TOTAL (kg)</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->total_material_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->total_material_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-xs text-gray-500 mb-3 font-bold">Berat box (kg)</span>
+                                        <span class="text-xs text-gray-500 mb-3 font-bold">BERAT BOX (kg)</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->total_box_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->total_box_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-xs text-gray-500 mb-3 font-bold">Berat isi (kg)</span>
+                                        <span class="text-xs text-gray-500 mb-3 font-bold">BERAT ISI TRUCK (kg)</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->total_load_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->total_load_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xs text-gray-500 mb-3 font-bold">MIN</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->min_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->min_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xs text-gray-500 mb-3 font-bold">MAX</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->max_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->max_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xs text-yellow-500 mb-3 font-bold">TOLERANSI</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->tolerance_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->tolerance_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="flex flex-col">
                                         <span class="text-xs text-red-500 mb-3 font-bold">WARNING</span>
                                         <span
-                                            class="text-sm font-medium text-center">{{ $truck->warning_weight ?? '-' }}</span>
+                                            class="text-sm font-medium text-center">{{ number_format($truck->warning_weight ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -255,14 +256,14 @@
 
                                                 <!-- Grup Item Desc -->
                                                 <th class="border p-1 text-center" colspan="4">Item Desc</th>
-
-                                                <th class="border p-1 text-center" rowspan="2">Box/Pallet</th>
-                                                <th class="border p-1 text-center" rowspan="2">PCS</th>
-                                                <th class="border p-1 text-center" rowspan="2">Box</th>
-                                                <th class="border p-1 text-center" rowspan="2">Box Weight</th>
+                                                <th class="border p-1 text-center" rowspan="2">Qty (Box/Pallet)
+                                                </th>
+                                                <th class="border p-1 text-center" rowspan="2">Qty/PCS</th>
+                                                <th class="border p-1 text-center" rowspan="2">Qty box/pallet</th>
                                                 <th class="border p-1 text-center" rowspan="2">Status</th>
                                                 <th class="border p-1 text-center" rowspan="2">Waktu Muat</th>
-                                                <th class="border p-1 text-center" rowspan="2">Material Weight</th>
+                                                <th class="border p-1 text-center" rowspan="2">BERAT box</th>
+                                                <th class="border p-1 text-center" rowspan="2">BERAT TOTAL</th>
                                                 <th class="border p-1 text-center" rowspan="2">Aksi</th>
                                             </tr>
 
@@ -289,15 +290,19 @@
 
                                                     <!-- Item Desc -->
                                                     <td class="border p-1 text-center">{{ $item->type }}</td>
-                                                    <td class="border p-1 text-center">{{ $item->item_weight }}</td>
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->item_weight, 0, ',', '.') }}</td>
                                                     <td class="border p-1 text-center">{{ $item->color }}</td>
                                                     <td class="border p-1 text-center">{{ $item->pattern_nose }}</td>
 
-                                                    <td class="border p-1 text-center">{{ $item->qty_box_pallet }}
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->qty_box_pallet, 0, ',', '.') }}
                                                     </td>
-                                                    <td class="border p-1 text-center">{{ $item->qty_pcs }}</td>
-                                                    <td class="border p-1 text-center">{{ $item->qty_box }}</td>
-                                                    <td class="border p-1 text-center">{{ $item->box_weight }}</td>
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->qty_pcs, 0, ',', '.') }}</td>
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->qty_box, 0, ',', '.') }}</td>
+
 
                                                     <td
                                                         class="border p-1 text-center font-bold 
@@ -306,7 +311,10 @@
                                                     </td>
 
                                                     <td class="border p-1 text-center">{{ $item->waktu_muat }}</td>
-                                                    <td class="border p-1 text-center">{{ $item->material_weight }}
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->box_weight, 0, ',', '.') }}</td>
+                                                    <td class="border p-1 text-center">
+                                                        {{ number_format($item->material_weight, 0, ',', '.') }}
                                                     </td>
                                                     <td class="border p-1 text-center">
                                                         <div class="flex justify-center space-x-1">
@@ -465,7 +473,7 @@
                         <input type="number" step="0.01" name="material_weight"
                             class="border rounded p-2 w-full text-sm">
                     </div>
-                    
+
                 </div>
                 <div class="mt-6 flex justify-end space-x-3">
                     <button type="button" onclick="closeItemModal()"
@@ -494,6 +502,11 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Customer</label>
                         <input type="text" name="nama_customer" id="edit_nama_customer"
+                            class="border rounded p-2 w-full text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">kedatangan</label>
+                        <input type="text" name="kedatangan_truck" id="kedatangan_truck"
                             class="border rounded p-2 w-full text-sm">
                     </div>
                     <div>
@@ -614,6 +627,7 @@
             form.action = `/item/${item.id}`;
 
             document.getElementById('edit_nama_customer').value = item.nama_customer ?? '';
+            document.getElementById('kedatangan_truck').value = item.kedatangan_truck ?? '';
             document.getElementById('edit_area').value = item.area ?? '';
             document.getElementById('edit_no_so').value = item.no_so ?? '';
             document.getElementById('edit_urutan_bongkar').value = item.urutan_bongkar ?? '';
@@ -635,6 +649,11 @@
 
         function closeEditItemModal() {
             document.getElementById('editItemModal').classList.add('hidden');
+        }
+
+        function resetDashboard() {
+            const tableBody = document.querySelector("#table-dashboard tbody");
+            tableBody.innerHTML = ""; // hapus semua baris tabel
         }
     </script>
 </body>

@@ -41,6 +41,7 @@ return new class extends Migration
 
             $table->enum('status_process', ['loading', 'finish'])->default('loading');
             $table->enum('status_security', ['periksa', 'pass'])->default('periksa');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

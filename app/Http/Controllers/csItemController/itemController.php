@@ -17,7 +17,7 @@ class itemController extends Controller
 
         $item = CsItem::create([
             'truck_id' => $truck->id,
-            'kedatangan_truck' => $request->no_kedatangan_truck,
+            'kedatangan_truck' => $request->kedatangan_truck,
             'nama_customer' => $request->nama_customer,
             'area' => $request->area,
             'urutan_bongkar' => $request->urutan_bongkar,
@@ -41,27 +41,29 @@ class itemController extends Controller
 
     public function editItem(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
+            'kedatangan_truck' => 'required|string|max:50|min:1',
             'nama_customer'    => 'required|string|max:100',
             'area'             => 'required|string|max:100',
             'urutan_bongkar'   => 'required|integer',
             'no_so'            => 'required|string|max:50',
             'mid'              => 'required|string|max:50',
             'type'             => 'required|string|max:50',
-            'item_weight'      => 'required|numeric|min:0',
+            'item_weight'      => 'required|decimal:2|min:1',
             'color'            => 'required|string|max:50',
             'pattern_nose'     => 'required|string|max:50',
-            'qty_box_pallet'   => 'required|integer|min:0',
-            'qty_pcs'          => 'required|integer|min:0',
-            'qty_box'          => 'required|integer|min:0',
+            'qty_box_pallet'   => 'required|integer|min:1',
+            'qty_pcs'          => 'required|integer|min:1',
+            'qty_box'          => 'required|integer|min:1',
             'status_stock'     => 'nullable|string|max:50',
             'waktu_muat'       => 'required|string|max:50',
-            'material_weight'  => 'required|numeric|min:0',
-            'box_weight'       => 'required|numeric|min:0',
+            'material_weight'  => 'required|decimal:2|min:1',
+            'box_weight'       => 'required|decimal:2|min:1',
+             // tambahkan kalau memang ada field ini
         ]);
 
         $item = CsItem::findOrFail($id);
-        $item->update($request->only(['nama_customer', 'item_desc', 'qty']));
+        $item->update($validated);
 
         return redirect()->back()->with('success', 'Item berhasil diupdate');
     }
