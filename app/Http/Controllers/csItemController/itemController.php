@@ -6,6 +6,7 @@ use App\Models\CsTruck;
 use App\Models\CsItem;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class itemController extends Controller
 {
@@ -16,6 +17,7 @@ class itemController extends Controller
 
         $item = CsItem::create([
             'truck_id' => $truck->id,
+            'kedatangan_truck' => $request->no_kedatangan_truck,
             'nama_customer' => $request->nama_customer,
             'area' => $request->area,
             'urutan_bongkar' => $request->urutan_bongkar,
@@ -70,5 +72,34 @@ class itemController extends Controller
         $item->delete();
 
         return redirect()->back()->with('success', 'Item berhasil dihapus');
+    }
+
+    public function history(Request $request)
+    {
+        $query = CsTruck::with('items')->orderBy('date', 'desc');
+
+        // filter by tanggal
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $trucks = $query->get();
+
+        return view('cs.history', compact('trucks'));
+    }
+
+    public function exportHistoryPdf(Request $request)
+    {
+        $query = CsTruck::with('items')->orderBy('date', 'desc');
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $truck = $query->first();
+
+
+        $pdf = Pdf::loadView('cs.history-pdf', compact('truck'));
+        return $pdf->download('laporan-truck-' . ($request->date ?? now()->toDateString()) . '.pdf');
     }
 }

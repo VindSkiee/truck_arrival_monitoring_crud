@@ -10,6 +10,7 @@ class CsTruck extends Model
 
     protected $fillable = [
         'date',
+        'arrival_date',
         'arrival_number',
         'no_truck',
         'loading_dock',

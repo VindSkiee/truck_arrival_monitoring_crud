@@ -18,6 +18,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':cs'])->group(function () {
     Route::delete('/item/{id}', [itemController::class, 'deleteItem'])->name('item.delete');
     Route::delete('/truck/{id}', [truckController::class, 'deleteTruck'])->name('truck.delete');
     Route::put('/item/{id}', [itemController::class, 'editItem'])->name('item.edit');
+
+    Route::get('/cs/history', [itemController::class, 'history'])->name('cs.history');
+    Route::get('/cs/history/pdf', [itemController::class, 'exportHistoryPdf'])->name('cs.history.pdf');
 });
 
 // Route::middleware(['auth', RoleMiddleware::class . ':security'])->group(function () {

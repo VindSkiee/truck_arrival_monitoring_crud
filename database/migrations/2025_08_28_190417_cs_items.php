@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cs_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('truck_id')->nullable()->constrained('cs_trucks')->onDelete('cascade');
-            $table->dateTime('kedatangan_truck')->nullable();
+            $table->string('kedatangan_truck')->nullable();
             $table->string('nama_customer')->nullable();
             $table->string('area')->nullable();
             $table->integer('urutan_bongkar')->nullable();

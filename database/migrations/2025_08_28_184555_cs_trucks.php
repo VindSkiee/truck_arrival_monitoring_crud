@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('cs_trucks', function (Blueprint $table) {
             $table->id();
-            $table->date('date')->nullable();
-            $table->integer('arrival_number')->nullable(); // No. Kedatangan (1, 2, 3)
+            $table->date('date');
+            $table->date('arrival_date')->nullable(); // Tanggal Kedatangan
+            $table->integer('arrival_number'); // No. Kedatangan (1, 2, 3)
             $table->string('no_truck')->nullable(); // Akan di-update dari Security
             $table->string('loading_dock')->nullable(); // loading dock whouse
 

@@ -12,9 +12,16 @@ class truckController extends Controller
     // 1. Buat truck baru saat kedatangan
     public function createTruck(Request $request)
     {
-        $truck = CsTruck::create([         
-            'arrival_number' => $request->arrival_number ?? 1,
-        ]);
+        $validated = $request->validate([
+        'arrival_number' => 'required|integer',
+        'date'   => 'required|date',
+    ]);
+
+    $truck = CsTruck::create([
+        'arrival_number' => $validated['arrival_number'],
+        'date' => $validated['date'],
+    ]);
+
 
         return redirect()->route('cs.dashboard')->with('success', 'Truck berhasil ditambahkan');
     }
