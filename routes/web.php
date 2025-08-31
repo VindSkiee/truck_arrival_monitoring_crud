@@ -5,6 +5,20 @@ use App\Http\Controllers\csTruckController\truckController;
 use App\Http\Controllers\csItemController\itemController;
 use App\Http\Controllers\authController\LoginController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\AdminUserController;
+
+Route::get('/login', function () {
+    return redirect()->route('select.role');
+});
+
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.dashboard');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+});
+
 
 Route::get('/', [LoginController::class, 'showRoleSelection'])->name('select.role');
 Route::get('/login/{role}', [LoginController::class, 'loginForm'])->name('login.role');

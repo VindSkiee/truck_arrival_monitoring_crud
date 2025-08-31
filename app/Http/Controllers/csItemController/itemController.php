@@ -77,18 +77,20 @@ class itemController extends Controller
     }
 
     public function history(Request $request)
-    {
-        $query = CsTruck::with('items')->orderBy('date', 'desc');
+{
+    $query = CsTruck::query(); // atau model tabelmu
 
-        // filter by tanggal
-        if ($request->filled('date')) {
-            $query->whereDate('date', $request->date);
-        }
-
-        $trucks = $query->get();
-
-        return view('cs.history', compact('trucks'));
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
     }
+
+    $data = $query->get();
+
+    return view('cs.history', [
+        'trucks' => $data,
+        'date' => $request->date,
+    ]);
+}
 
     public function exportHistoryPdf(Request $request)
     {

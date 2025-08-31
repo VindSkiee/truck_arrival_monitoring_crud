@@ -131,7 +131,7 @@
             <div class="form-group">
                 <label for="username">Masukkan Username</label>
                 <input type="text" id="username" name="username" value="{{ old('username') }}" required
-                    placeholder="cs / security / warehouse">
+                    placeholder="{{ $role }}">
             </div>
 
             <div class="form-group">

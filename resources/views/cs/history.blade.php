@@ -81,8 +81,8 @@
             </div>
             <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded">Cari</button>
 
-            @if (request('date'))
-                <a href="{{ route('cs.history.pdf', ['date' => request('date')]) }}"
+            @if ($trucks && $trucks->count() > 0)
+                <a href="{{ route('cs.history.pdf', ['date' => $date]) }}"
                     class="bg-green-600 text-white px-3 py-2 rounded" target="_blank">
                     Cetak PDF
                 </a>
@@ -195,12 +195,10 @@
                                     <tbody>
                                         @foreach ($truck->items as $item)
                                             <tr class="hover:bg-gray-50">
-                                                <td class="border p-1 text-center">{{ $item->kedatangan_truck }}
-                                                </td>
+                                                <td class="border p-1 text-center">{{ $item->kedatangan_truck }}</td>
                                                 <td class="border p-1 text-center">{{ $item->nama_customer }}</td>
                                                 <td class="border p-1 text-center">{{ $item->area }}</td>
-                                                <td class="border p-1 text-center">{{ $item->urutan_bongkar }}
-                                                </td>
+                                                <td class="border p-1 text-center">{{ $item->urutan_bongkar }}</td>
                                                 <td class="border p-1 text-center">{{ $item->no_so }}</td>
                                                 <td class="border p-1 text-center">{{ $item->mid }}</td>
 
@@ -212,17 +210,15 @@
                                                 <td class="border p-1 text-center">{{ $item->pattern_nose }}</td>
 
                                                 <td class="border p-1 text-center">
-                                                    {{ number_format($item->qty_box_pallet, 0, ',', '.') }}
-                                                </td>
+                                                    {{ number_format($item->qty_box_pallet, 0, ',', '.') }}</td>
                                                 <td class="border p-1 text-center">
                                                     {{ number_format($item->qty_pcs, 0, ',', '.') }}</td>
                                                 <td class="border p-1 text-center">
                                                     {{ number_format($item->qty_box, 0, ',', '.') }}</td>
 
-
                                                 <td
                                                     class="border p-1 text-center font-bold 
-                                {{ $item->status_stock === 'Stock Ready' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                {{ $item->status_stock === 'Stock Ready' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
                                                     {{ $item->status_stock }}
                                                 </td>
 
@@ -230,8 +226,7 @@
                                                 <td class="border p-1 text-center">
                                                     {{ number_format($item->box_weight, 0, ',', '.') }}</td>
                                                 <td class="border p-1 text-center">
-                                                    {{ number_format($item->material_weight, 0, ',', '.') }}
-                                                </td>
+                                                    {{ number_format($item->material_weight, 0, ',', '.') }}</td>
                                                 <td class="border p-1 text-center">
                                                     <div class="flex justify-center space-x-1">
                                                         <button type="button"
@@ -254,7 +249,18 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+
+                                        <!-- Tambahkan baris remarks -->
+                                        @if (!empty($truck->remarks))
+                                            <tr class="bg-yellow-50">
+                                                <td class="border p-2 font-bold text-gray-700 text-left"
+                                                    colspan="18">
+                                                    Remarks: <span class="font-normal">{{ $truck->remarks }}</span>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
+
                                 </table>
                             @else
                                 <div class="text-center py-4 text-gray-500">
@@ -383,8 +389,6 @@
     </div>
 
     <script>
-        
-
         // Close modal when clicking outside
         document.getElementById('itemModal').addEventListener('click', function(e) {
             if (e.target === this) {

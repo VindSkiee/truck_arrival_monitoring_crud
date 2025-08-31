@@ -69,7 +69,7 @@
                     <!-- Ganti dengan tag img jika memiliki logo -->
                     <!-- <img src="path-to-logo.png" alt="Sonoco Logo" class="h-full"> -->
                 </div>
-                <h1 class="text-xl font-bold">SONOCO</h1>
+                <h1 class="text-xl font-bold">CS SONOCO</h1>
             </div>
             <div class="flex items-center space-x-4">
                 <a href="{{ route('cs.history') }}" class="hover:text-gray-300">

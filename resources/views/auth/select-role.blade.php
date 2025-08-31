@@ -93,6 +93,7 @@
         <a href="{{ route('login.role', 'cs') }}" class="role-card cs">CS</a>
         <a href="{{ route('login.role', 'security') }}" class="role-card security">Security</a>
         <a href="{{ route('login.role', 'warehouse') }}" class="role-card security">Warehouse</a>
+        <a href="{{ route('login.role', 'admin') }}" class="role-card security">Admin</a>
 
         <div class="footer">
             PT. Papertech Indonesia &copy; 2025 - All Rights Reserved
