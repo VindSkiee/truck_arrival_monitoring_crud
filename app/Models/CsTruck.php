@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,14 +8,6 @@ class CsTruck extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel (opsional, karena sudah sesuai konvensi).
-     */
-    protected $table = 'cs_trucks';
-
-    /**
-     * Kolom yang bisa diisi (mass assignable).
-     */
     protected $fillable = [
         'date',
         'arrival_number',
@@ -30,23 +21,17 @@ class CsTruck extends Model
         'total_items_weight',
         'total_material_weight',
         'total_box_weight',
+        'min_weight',
+        'max_weight',
+        'tolerance_weight',
+        'warning_weight',
         'total_load_weight',
         'status_process',
         'status_security',
     ];
 
-    /**
-     * Kolom yang dianggap bertipe date/datetime.
-     */
-    protected $casts = [
-        'date' => 'date',
-        'arrival_time' => 'datetime',
-        'total_material_weight' => 'decimal:3',
-        'total_box_weight' => 'decimal:3',
-        'total_load_weight' => 'decimal:3',
-        'min_weight' => 'decimal:3',
-        'max_weight' => 'decimal:3',
-        'tolerance_weight' => 'decimal:3',
-        'warning_weight' => 'decimal:3',
-    ];
+    public function items()
+    {
+        return $this->hasMany(CsItem::class, 'truck_id');
+    }
 }

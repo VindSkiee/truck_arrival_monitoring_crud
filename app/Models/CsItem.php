@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,14 +8,6 @@ class CsItem extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel (opsional, Laravel otomatis pakai cs_items).
-     */
-    protected $table = 'cs_items';
-
-    /**
-     * Kolom yang bisa diisi mass assignment.
-     */
     protected $fillable = [
         'kedatangan_truck',
         'nama_customer',
@@ -35,19 +26,11 @@ class CsItem extends Model
         'waktu_muat',
         'material_weight',
         'box_weight',
+        'truck_id',
     ];
 
-    /**
-     * Casting tipe data otomatis.
-     */
-    protected $casts = [
-        'kedatangan_truck' => 'datetime',
-        'item_weight' => 'decimal:2',
-        'material_weight' => 'decimal:2',
-        'box_weight' => 'decimal:2',
-        'urutan_bongkar' => 'integer',
-        'qty_box_pallet' => 'integer',
-        'qty_pcs' => 'integer',
-        'qty_box' => 'integer',
-    ];
+    public function truck()
+    {
+        return $this->belongsTo(CsTruck::class, 'truck_id');
+    }
 }
