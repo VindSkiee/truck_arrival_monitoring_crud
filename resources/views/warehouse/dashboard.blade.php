@@ -66,6 +66,10 @@
                 <h1 class="text-xl font-bold">WAREHOUSE SONOCO</h1>
             </div>
             <div class="flex items-center space-x-4">
+                <a href="{{ route('warehouse.monitor') }}" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                    Monitor Warehouse
+                </a>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="hover:text-gray-300">
