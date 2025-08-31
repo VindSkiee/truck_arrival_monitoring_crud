@@ -4,6 +4,9 @@ use illuminate\Support\Facades\Route;
 use App\Http\Controllers\csTruckController\truckController;
 use App\Http\Controllers\csItemController\itemController;
 use App\Http\Controllers\authController\LoginController;
+use App\Http\Controllers\WarehouseController\WarehouseController;
+use App\Http\Controllers\SecurityController\SecurityController;
+use App\Http\Controllers\WarehouseController\MonitorWarehouseController;
 use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/', [LoginController::class, 'showRoleSelection'])->name('select.role');
@@ -23,10 +26,14 @@ Route::middleware(['auth', RoleMiddleware::class . ':cs'])->group(function () {
     Route::get('/cs/history/pdf', [itemController::class, 'exportHistoryPdf'])->name('cs.history.pdf');
 });
 
-// Route::middleware(['auth', RoleMiddleware::class . ':security'])->group(function () {
-//     Route::get('/security-dashboard', [SecurityController::class, 'dashboard'])->name('security.dashboard');
-// });
+Route::middleware(['auth', RoleMiddleware::class . ':security'])->group(function () {
+    Route::get('/security-dashboard', [SecurityController::class, 'dashboard'])->name('security.dashboard');
+    Route::put('/security-dashboard/truck/{checkId}', [SecurityController::class, 'updateTruckData'])->name('security.updateTruckData');
+});
 
-// Route::middleware(['auth', RoleMiddleware::class . ':warehouse'])->group(function () {
-//     Route::get('/warehouse-dashboard', [WarehouseController::class, 'dashboard'])->name('warehouse.dashboard');
-// });
+Route::middleware(['auth', RoleMiddleware::class . ':warehouse'])->group(function () {
+    Route::get('/warehouse-dashboard', [WarehouseController::class, 'dashboard'])->name('warehouse.dashboard');
+    Route::put('/warehouse-dashboard/truck/{check}', [WarehouseController::class, 'updateLoadingStatus'])->name('warehouse.updateLoadingStatus');
+    Route::get('/warehouse-dashboard/monitor', [MonitorWarehouseController::class, 'index'])->name('warehouse.monitor');
+    Route::get('/warehouse-dashboard/monitor/data', [MonitorWarehouseController::class, 'fetchData'])->name('monitor.warehouse.data');
+});

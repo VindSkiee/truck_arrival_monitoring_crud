@@ -32,6 +32,7 @@ return new class extends Migration
             $table->decimal('total_material_weight', 12, 3)->nullable(); // BERAT TOTAL (Kg)
             $table->decimal('total_box_weight', 12, 3)->nullable(); // BERAT box (Kg)
             $table->decimal('total_load_weight', 12, 3)->nullable(); // BERAT ISI TRUCK = total_material_weight
+            $table->decimal('sum_empty_load_weight', 12, 3)->nullable()->storedAs('empty_weight + total_load_weight'); //Berat Total(security) = timbangan kosong + berat material
 
             // computed column masih bisa nullable, tapi otomatis terisi ketika total_load_weight ada
             $table->decimal('min_weight', 12, 3)->nullable()->storedAs('total_load_weight * 0.96');
