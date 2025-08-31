@@ -129,7 +129,7 @@
                     </div>
                     <div class="info-row">
                         <span class="text-xs text-gray-500 font-bold">Status</span>
-                        <span class="status-badge {{ $check->status_security=='pass'?'bg-green-100 text-green-800':'bg-red-100 text-red-800' }}">
+                        <span class="text-sm font-medium {{ $check->status_security=='pass'?'bg-green-100 text-green-800':'bg-red-100 text-red-800' }}">
                             {{ $check->status_security ?? '-' }}
                         </span>
                     </div>
