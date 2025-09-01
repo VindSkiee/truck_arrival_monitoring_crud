@@ -17,7 +17,7 @@ class MonitorWarehouseController extends Controller
     // Fetch data JSON untuk AJAX
     public function fetchData()
     {
-        $checks = CsTruck::select('loading_dock', 'arrival_number', 'no_truck', 'status_process')
+        $checks = CsTruck::whereDate('created_at', today())->select('loading_dock', 'arrival_number', 'no_truck', 'status_process')
             ->orderBy('created_at', 'desc')
             ->get();
 

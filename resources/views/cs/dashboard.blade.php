@@ -139,7 +139,7 @@
                 @if ($trucks->isEmpty())
                     <div class="flex flex-col items-center justify-center py-10">
                         <i class="fas fa-truck text-4xl text-gray-400 mb-2"></i>
-                        <p class="text-gray-600 text-center">Belum ada truck yang ditambahkan.</p>
+                        <p class="text-gray-600 text-center">Belum ada truck yang ditambahkan <b>hari ini.</b></p>
                     </div>
                 @else
                     <div class="flex justify-end mb-4">

@@ -63,9 +63,12 @@
                 <a href="{{ route('cs.dashboard') }}" class="hover:text-gray-300">
                     <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
                 </a>
-                <a href="#" class="hover:text-gray-300">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="hover:text-gray-300">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
@@ -272,7 +275,12 @@
                     </div>
                 </div>
             @empty
-                <p class="text-gray-500">Belum ada data history.</p>
+
+                <div class="flex flex-col items-center justify-center py-10">
+                    <i class="fas fa-truck text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-600 text-center">Tidak ada truck di <b>Tanggal ini.</b></p>
+                </div>
+
         @endforelse
     </div>
 

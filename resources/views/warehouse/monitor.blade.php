@@ -28,7 +28,7 @@
         <thead class="bg-blue-600 text-white">
             <tr>
                 <th class="px-4 py-2 text-left">Loading Dock</th>
-                <th class="px-4 py-2 text-left">Arrival Number</th>
+                <th class="px-4 py-2 text-left">No Kedatangan</th>
                 <th class="px-4 py-2 text-left">No Truck</th>
                 <th class="px-4 py-2 text-left">Status Process</th>
             </tr>

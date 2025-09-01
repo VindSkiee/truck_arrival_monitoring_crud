@@ -59,7 +59,7 @@ class itemController extends Controller
             'waktu_muat'       => 'required|string|max:50',
             'material_weight'  => 'required|decimal:2|min:1',
             'box_weight'       => 'required|decimal:2|min:1',
-             // tambahkan kalau memang ada field ini
+            // tambahkan kalau memang ada field ini
         ]);
 
         $item = CsItem::findOrFail($id);
@@ -77,20 +77,20 @@ class itemController extends Controller
     }
 
     public function history(Request $request)
-{
-    $query = CsTruck::query(); // atau model tabelmu
+    {
+        $query = CsTruck::query(); // atau model tabelmu
 
-    if ($request->filled('date')) {
-        $query->whereDate('created_at', $request->date);
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $data = $query->get();
+
+        return view('cs.history', [
+            'trucks' => $data,
+            'date' => $request->date,
+        ]);
     }
-
-    $data = $query->get();
-
-    return view('cs.history', [
-        'trucks' => $data,
-        'date' => $request->date,
-    ]);
-}
 
     public function exportHistoryPdf(Request $request)
     {

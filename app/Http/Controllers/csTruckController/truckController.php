@@ -13,14 +13,14 @@ class truckController extends Controller
     public function createTruck(Request $request)
     {
         $validated = $request->validate([
-        'arrival_number' => 'required|integer',
-        'date'   => 'required|date',
-    ]);
+            'arrival_number' => 'required|integer',
+            'date'   => 'required|date',
+        ]);
 
-    $truck = CsTruck::create([
-        'arrival_number' => $validated['arrival_number'],
-        'date' => $validated['date'],
-    ]);
+        $truck = CsTruck::create([
+            'arrival_number' => $validated['arrival_number'],
+            'date' => $validated['date'],
+        ]);
 
 
         return redirect()->route('cs.dashboard')->with('success', 'Truck berhasil ditambahkan');
@@ -36,7 +36,7 @@ class truckController extends Controller
 
     public function dashboard()
     {
-        $trucks = \App\Models\CsTruck::with('items')->get();
+        $trucks = \App\Models\CsTruck::whereDate('date', today())->with('items')->get();
         return view('cs.dashboard', compact('trucks'), [
             'kedatangan_trucks' => \App\Models\CsItem::select('kedatangan_truck')->distinct()->pluck('kedatangan_truck'),
             'customers' => \App\Models\CsItem::select('nama_customer')->distinct()->pluck('nama_customer'),
@@ -58,5 +58,4 @@ class truckController extends Controller
 
         return redirect()->route('cs.dashboard')->with('success', 'Truck berhasil dihapus');
     }
-
 }
