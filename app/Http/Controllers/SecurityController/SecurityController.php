@@ -12,7 +12,7 @@ class SecurityController extends Controller
     public function dashboard()
     {
         $checks = CsTruck::whereDate('created_at', today())
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return view('security.dashboard', compact('checks'));

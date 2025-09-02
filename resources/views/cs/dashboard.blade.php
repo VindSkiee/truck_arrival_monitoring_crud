@@ -85,19 +85,39 @@
             </div>
         </div>
     </nav>
+    @if (session('success'))
+        <div id="alert-box"
+            class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-white-800 dark:text-green-400"
+            role="alert">
+            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+                <span class="font-medium">Success!</span> {{ session('success') }}.
+            </div>
+        </div>
+    @elseif(session('error'))
+        <div id="alert-box"
+            class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-white-800 dark:text-red-400"
+            role="alert">
+            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+                <span class="font-medium">Danger!</span> {{ session('error') }}.
+            </div>
+        </div>
+    @endif
 
     <div class="p-4">
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Success!</strong>
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
-        @elseif(session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Something went wrong!</strong>
-                <span class="block sm:inline">{{ session('error') }}</span>
-            </div>
-        @endif
+
+
 
         <!-- Reset Button -->
 
@@ -655,6 +675,16 @@
             const tableBody = document.querySelector("#table-dashboard tbody");
             tableBody.innerHTML = ""; // hapus semua baris tabel
         }
+
+        // hilangkan alert setelah 3 detik
+        setTimeout(() => {
+            const alertBox = document.getElementById('alert-box');
+            if (alertBox) {
+                alertBox.style.transition = "opacity 0.5s ease";
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500); // hapus elemen setelah fade out
+            }
+        }, 3000);
     </script>
 </body>
 

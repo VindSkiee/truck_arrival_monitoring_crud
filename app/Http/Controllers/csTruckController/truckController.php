@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\csTruckController;
 
 use App\Models\CsTruck;
-use App\Models\CsItem;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 

@@ -90,7 +90,7 @@
                             class="bg-gradient-to-r from-blue-50 to-gray-50 px-4 py-3 flex justify-between items-center border-b flex-wrap">
                             <div class="flex items-center">
                                 <h2 class="font-semibold text-gray-800">
-                                    <i class="fas fa-truck mr-2"></i>Truck - {{ $check->no_truck ?? '-' }}
+                                    <i class="fas fa-truck mr-2"></i>Truck - {{ $check->no_truck ?? 'No. Plat belum dimasukkan' }}
                                 </h2>
                             </div>
                             <div class="flex items-center space-x-2 mt-2 md:mt-0">

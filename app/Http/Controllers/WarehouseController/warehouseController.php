@@ -12,7 +12,7 @@ class WarehouseController extends Controller
     {
         // Ambil semua data truck hari ini
         $checks = CsTruck::whereDate('created_at', today())
-            ->orderBy('created_at', 'desc') // terbaru di atas
+            ->orderBy('created_at', 'asc') // terbaru di atas
             ->get(); 
 
         return view('warehouse.dashboard', compact('checks'));

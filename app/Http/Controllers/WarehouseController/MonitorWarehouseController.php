@@ -18,7 +18,7 @@ class MonitorWarehouseController extends Controller
     public function fetchData()
     {
         $checks = CsTruck::whereDate('created_at', today())->select('loading_dock', 'arrival_number', 'no_truck', 'status_process')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return response()->json($checks);
