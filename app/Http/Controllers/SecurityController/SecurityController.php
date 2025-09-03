@@ -30,8 +30,16 @@ class SecurityController extends Controller
 
         $csTruck = CsTruck::find($checkId);
 
-        $statusSecurity = ($request->cargo_weight <= $csTruck->tolerance_weight) ? 'Pass' : 'Periksa';
+        // Tentukan status security dengan ketentuan:
+        // - Pass jika cargo_weight <= tolerance_weight DAN cargo_weight > 130% dari empty_weight
+        // - Selain itu, Periksa
+        $statusSecurity = 'Periksa';
         if ($csTruck) {
+            $withinTolerance = (float) $request->cargo_weight <= (float) $csTruck->tolerance_weight;
+            $aboveThirtyPercentOfEmpty = (float) $request->cargo_weight > ((float) $request->empty_weight * 1.3);
+            if ($withinTolerance && $aboveThirtyPercentOfEmpty) {
+                $statusSecurity = 'Pass';
+            }
             $csTruck->update([
                 'no_truck' => $request->no_truck,
                 'empty_weight' => $request->empty_weight,
