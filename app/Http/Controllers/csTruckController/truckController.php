@@ -8,23 +8,27 @@ use Illuminate\Routing\Controller;
 
 class truckController extends Controller
 {
-    // 1. Buat truck baru saat kedatangan
     public function createTruck(Request $request)
     {
-        $validated = $request->validate([
-            'arrival_number' => 'required|integer',
-            'date'   => 'required|date',
+        $request->validate([
+            'date' => 'required|date',
         ]);
-
-        $truck = CsTruck::create([
-            'arrival_number' => $validated['arrival_number'],
-            'date' => $validated['date'],
+    
+        // Ambil nomor kedatangan terakhir di tanggal yang sama
+        $lastTruck = CsTruck::where('date', $request->date)
+            ->orderBy('arrival_number', 'desc')
+            ->first();
+    
+        $nextArrivalNumber = $lastTruck ? $lastTruck->arrival_number + 1 : 1;
+    
+        CsTruck::create([
+            'arrival_number' => $nextArrivalNumber,
+            'date' => $request->date,
+            // tambahkan field lain jika perlu
         ]);
-
-
-        return redirect()->route('cs.dashboard')->with('success', 'Truck berhasil ditambahkan');
+    
+        return redirect()->back()->with('success', 'Pengiriman berhasil ditambahkan!');
     }
-
     // 3. Lihat detail truck beserta items
     public function getTruck($truckId)
     {
