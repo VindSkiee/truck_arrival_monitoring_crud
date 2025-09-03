@@ -96,7 +96,7 @@
         @forelse ($trucks as $truck)
             <div class="border rounded-lg shadow mb-6">
                 <div class="bg-gray-100 px-4 py-2 flex justify-between items-center">
-                    <h2 class="font-semibold">Truck - Kedatangan: {{ $truck->arrival_number }}</h2>
+                    <h2 class="font-semibold">PENGIRIMAN - {{ $truck->arrival_number }}</h2>
                     <span class="text-sm text-gray-600">Tanggal: {{ $truck->date }}</span>
                 </div>
 
