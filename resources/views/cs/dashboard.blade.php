@@ -124,35 +124,24 @@
 
         <div class="max-w-full mx-auto">
             {{-- Form Tambah Truck --}}
-            <div class="bg-white p-4 rounded-lg shadow mb-6 mt-4 max-w-md">
-                <h2 class="text-lg font-semibold mb-3 text-gray-700 flex items-center">
-                    <i class="fas fa-plus-circle mr-2"></i> Tambah Truck Baru
-                </h2>
-                <form method="POST" action="{{ route('cs.addTruck') }}">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">No. Kedatangan</label>
-                        <input type="number" name="arrival_number" class="border rounded p-2 w-full text-sm" required
-                            placeholder="Masukkan No. Kedatangan">
-                    </div>
+            <form method="POST" action="{{ route('cs.addTruck') }}" class="flex items-center gap-3 bg-white p-2 rounded shadow w-full max-w-full">
+            @csrf
 
-                    <div class="mb-4">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Tanggal</label>
-                        <input type="date" name="date" class="border rounded p-2 w-full text-sm" required>
-                    </div>
+            <label for="date" class="text-xs font-medium text-gray-600 whitespace-nowrap">Tanggal:</label>
 
-                    <div class="flex justify-start">
-                        <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm w-full md:w-auto">
-                            <i class="fas fa-plus mr-1"></i> Tambah Truck
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <input type="date" id="date" name="date"
+                class="border rounded px-2 py-1 text-sm w-[150px]" required>
+
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm flex items-center">
+                <i class="fas fa-plus mr-1"></i> Tambah Pengiriman
+            </button>
+        </form>
+
 
 
             {{-- Trucks List --}}
-            <div class="space-y-5">
+            <div class="space-y-5 mt-5">
                 <h2 class="text-lg font-semibold mb-3 text-gray-700 flex items-center">
                     <i class="fas fa-list mr-2"></i> Daftar Truck
                 </h2>
@@ -171,7 +160,7 @@
                                 class="bg-gradient-to-r from-blue-50 to-gray-50 px-4 py-3 flex justify-between items-center flex-wrap border-b">
                                 <div class="flex items-center">
                                     <h2 class="font-semibold text-gray-800">
-                                        <i class="fas fa-truck mr-2"></i>TRUCK - {{ $truck->arrival_number }}
+                                        <i class="fas fa-truck mr-2"></i>PENGIRIMAN - {{ $truck->arrival_number }}
                                     </h2>
                                     @if ($truck->no_truck)
                                         <span
